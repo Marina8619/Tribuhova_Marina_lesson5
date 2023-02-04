@@ -7,16 +7,28 @@
 
 import csv
 
+#создаю новый диалект, т.к. csv класс у меня с разделителем |
+class MyDialect(csv.Dialect):
+    quoting = csv.QUOTE_MINIMAL
+    delimiter = "|"
+    quotechar = " "
+    escapechar='\\'
+    strict = False
+    lineterminator = "\n"
+# регистрация диалекта
+csv.register_dialect("marina_dialect", dialect=MyDialect)
 
 def read_csv():
     with open('data/data.csv') as f:
         lst = []
         # Преобразует строки csv в словарь
-        reader = csv.DictReader(f)
+        reader = csv.DictReader(f, dialect=MyDialect)
         for row in reader:
             lst.append(row)
     return lst
 
 
 print(read_csv())
+
+
 
